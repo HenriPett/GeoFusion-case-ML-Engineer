@@ -74,8 +74,8 @@ def obtem_pois(latitude: float, longitude: float):
                 'n_grandes_redes': '0'}
 
 
-def obtem_data(latitude: float, longitude: float):
-
+def obtem_predicao(latitude: float, longitude: float):
+    # TODO not returning the right value
     area_de_influencia = 1000
     target_pois = {}
     data = pd.DataFrame([{'latitude': latitude,
@@ -99,7 +99,7 @@ def obtem_data(latitude: float, longitude: float):
         if i not in df_data:
             df_data[i] = 0
 
-    return loaded_model.predict(df_data)
+    return {'predicao': loaded_model.predict(df_data)[0]}
 
 
-print(obtem_data(-22.818201, -46.988467))
+# print(predict(-22.818201, -46.988467))

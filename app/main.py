@@ -4,7 +4,7 @@ import uvicorn
 from fastapi import FastAPI
 
 from core.settings import DevSettings, ProdSettings
-from services.predict import obtem_pois
+from services.predict import obtem_pois, obtem_predicao
 from dotenv import find_dotenv, load_dotenv
 
 app = FastAPI()
@@ -33,15 +33,15 @@ app, settings = configure_app()
 
 @app.get("/predict/")
 def consult(lat, lng):
-    data = {"statusCode": 200, "body": {
+    data = {
         "latitude": lat,
         "longitude": lng,
-        "predicao": ''
-    }}
+    }
 
     data.update(obtem_pois(float(lat), float(lng)))
+    data.update(obtem_predicao(float(lat), float(lng)))
 
-    response = data
+    response = {'status_code': 200, 'body': data}
 
     return json.dumps(response)
 
