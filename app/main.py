@@ -4,6 +4,7 @@ import uvicorn
 from fastapi import FastAPI
 
 from core.settings import DevSettings, ProdSettings
+from services.predict import obtem_pois
 from dotenv import find_dotenv, load_dotenv
 
 app = FastAPI()
@@ -30,12 +31,17 @@ def configure_app():
 app, settings = configure_app()
 
 
-@app.get("/predict/lat={lat}&lgn={lgn}")
-def consult_fiducia(lat, lgn):
-
-    response = {"statusCode": 200, "body": {
-        "response": f"{lat}:{lgn}"
+@app.get("/predict/")
+def consult(lat, lng):
+    data = {"statusCode": 200, "body": {
+        "latitude": lat,
+        "longitude": lng,
+        "predicao": ''
     }}
+
+    data.update(obtem_pois(float(lat), float(lng)))
+
+    response = data
 
     return json.dumps(response)
 
