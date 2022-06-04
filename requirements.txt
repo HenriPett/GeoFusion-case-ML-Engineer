@@ -2,3 +2,7 @@ uvicorn==0.17.6
 fastapi==0.78.0
 requests==2.25.1
 python-dotenv==0.20.0
+pandas
+shapely
+pyproj
+sklearn
