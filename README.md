@@ -23,4 +23,5 @@ Agora a imagem já está salva na maquina local e você pode roda-la com o coman
 ```
 docker run --publish 80:80  geofusion
 ```
-Ao rodar o comando, poderá ver os logs da aplicação e o app já esta ativo na porta 80 da sua máquina. \É possivel acessar nesse link: http://localhost
+Ao rodar o comando, poderá ver os logs da aplicação e o app já esta ativo na porta 80 da sua máquina.\
+É possivel acessar nesse link: http://localhost
