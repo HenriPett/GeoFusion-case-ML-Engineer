@@ -42,7 +42,7 @@ def obtem_configuracao():
 
 def obtem_pois(latitude: float, longitude: float):
 
-    area_de_influencia = 50
+    area_de_influencia = 49
     target_pois = {}
     data = pd.DataFrame([{'latitude': latitude,
                           'longitude': longitude}])
@@ -66,12 +66,12 @@ def obtem_pois(latitude: float, longitude: float):
             if i not in df_data:
                 df_data[i] = 0
 
-        return {'n_pequeno_varejista': f'{df_data.iloc[0].concorrentes__pequeno_varejista}',
-                'n_grandes_redes': f'{df_data.iloc[0].concorrentes__grandes_redes}'}
+        return {'n_pequeno_varejista': f'{float(df_data.iloc[0].concorrentes__pequeno_varejista)}',
+                'n_grandes_redes': f'{float(df_data.iloc[0].concorrentes__grandes_redes)}'}
     except Exception as e:
         print(e)
-        return {'n_pequeno_varejista': '0',
-                'n_grandes_redes': '0'}
+        return {'n_pequeno_varejista': '0.0',
+                'n_grandes_redes': '0.0'}
 
 
 def obtem_predicao(latitude: float, longitude: float):
