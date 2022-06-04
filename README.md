@@ -16,7 +16,7 @@ Ao rodar o comando, poderá ver os logs da aplicação e o app já esta ativo na
 É possivel acessar nesse link: http://localhost:8000
 
 ### Rodando com Docker:
-(É necessario ter o Docker na sua maquina, e alterar alguns imports de dependências locais)\
+(É necessario ter o Docker na sua maquina, e alterar imports de dependências locais (checar #1))\
 Primeiro, é necessario criar a imagem Docker. Vá até o diretorio do projeto e execute o comando:
 ```
 docker build --tag geofusion .
@@ -27,6 +27,10 @@ docker run --publish 80:80  geofusion
 ```
 Ao rodar o comando, poderá ver os logs da aplicação e o app já esta ativo na porta 80 da sua máquina.\
 É possivel acessar nesse link: http://localhost
+
+#1 - Colocar um ponto na frente dos imports locais no arquivo main.py, como apresentado abaixo:
+![image](https://user-images.githubusercontent.com/38021205/172028229-bde4166f-e508-49c2-8d6e-b3babd201b5f.png)
+
 
 ## Na aplicação:
 É possivel acessar a documentação da API no path /docs (http://localhost:8000/docs) e testar diretamente as funções.
