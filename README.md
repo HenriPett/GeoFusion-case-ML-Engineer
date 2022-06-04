@@ -27,3 +27,6 @@ docker run --publish 80:80  geofusion
 ```
 Ao rodar o comando, poderá ver os logs da aplicação e o app já esta ativo na porta 80 da sua máquina.\
 É possivel acessar nesse link: http://localhost
+
+## Na aplicação:
+É possivel acessar a documentação da API no path /docs (http://localhost:8000/docs) e testar diretamente as funções.\
