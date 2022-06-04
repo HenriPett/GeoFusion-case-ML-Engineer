@@ -1,0 +1,22 @@
+a. Parabéns! Sua aplicação está agora em produção, e, assim,
+você passa a ser responsável por ela! Como você garantirá que
+ela está respondendo conforme o esperado?
+
+
+b. É possível que, com o tempo, este modelo da Campifarma
+diminua a sua performance de predição? Em caso positivo,
+porque isso ocorre e como você solucionaria esse problema?
+
+
+c. Na sua visão, qual é a diferença de responsabilidades e de
+entregas de um Engenheiro de Machine Learning e de um
+Cientista de Dados?
+
+
+d. A Campifarma cresceu muito após a utilização do modelo que
+foi colocado em produção por você. Assim eles desejam
+expandir para todo o Brasil, e para o seu estudo de expansão
+desejam prever o faturamento em cada esquina o país, o que
+compreende por cerca de 10 milhões de pontos. Como você
+escalaria o seu serviço para responder à estas 10 milhões de
+requisições?
