@@ -29,4 +29,13 @@ Ao rodar o comando, poderá ver os logs da aplicação e o app já esta ativo na
 É possivel acessar nesse link: http://localhost
 
 ## Na aplicação:
-É possivel acessar a documentação da API no path /docs (http://localhost:8000/docs) e testar diretamente as funções.\
+É possivel acessar a documentação da API no path /docs (http://localhost:8000/docs) e testar diretamente as funções.
+
+## Desições técnicas
+Decidi fazer a API em FastAPI por ser levemente mais simples e, principalmente, por gerar documentação automaticamente com base nas docstrings.\
+Quanto a organização do diretório do projeto, a aplicação inteira está dentro da pasta app devido ao Docker utilizado exigir que seja colocado em uma pasta app.\
+As pastas dentro de /app estão organizados quanto a suas funções:\
+- core: Pasta utilizada para colocar informações importantes da aplicação (como configuração de ambiente)
+- middleware: Pasta utilizada para funções "secundarias" que normalmente fazem verificações nos Controllers
+- services: Pasta utilizada para funções "principais" no Controller, tentando abstrair funcionalidades dos Controllers e colocando nos services. Tambem é utilizada para consultar APIs externas
+- requirements: Pasta responsavel por armazenar arquivos necessarios para aplicação
