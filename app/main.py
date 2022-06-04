@@ -1,39 +1,47 @@
+"""Arquivo principal inicializa o app e recebe as rotas correspondentes"""
 import os
 import json
 import uvicorn
 from fastapi import FastAPI
-
-from core.settings import DevSettings, ProdSettings
-from services.predict import obtem_pois, obtem_predicao
-from middleware.verifica import verifica_lat_lgn
 from dotenv import find_dotenv, load_dotenv
+
+from core.configuracao import DevSettings, ProdSettings
+from services.gera_info import obtem_pois, obtem_predicao
+from middleware.verifica import verifica_lat_lgn
 
 app = FastAPI()
 
-description = """
+DESCRIPTION = """
 Geofusion API
 """
 
 
 def configure_app():
+    """Configura o app com base no ambiente"""
     load_dotenv(find_dotenv())
     if os.environ.get("API_ENVIRONMENT") == "prod":
-        settings = ProdSettings()
+        app_settings = ProdSettings()
     else:
-        settings = DevSettings()
+        app_settings = DevSettings()
 
-    app = FastAPI(
-        title=settings.APP_TITLE, description=description, version=settings.VERSION
+    fast_api_instance = FastAPI(
+        title=app_settings.APP_TITLE, description=DESCRIPTION, version=app_settings.VERSION
     )
 
-    return app, settings
+    return fast_api_instance, app_settings
 
 
 app, settings = configure_app()
 
 
 @app.get("/predict/")
-def consult(lat, lng):
+def consulta(lat, lng):
+    """
+    Endpoint que corresponde ao PATH /predict e responde ao metodo
+    GET. Recebe como parametro a latitude e longitude e retorna
+    os parametros rerebidos, a predição do modelo e pequenos
+    varejistas/grandes redes em um raio de 50 metros
+    """
     if not verifica_lat_lgn(float(lat), float(lng)):
         return json.dumps({'status_code': 401,
                            'body': {

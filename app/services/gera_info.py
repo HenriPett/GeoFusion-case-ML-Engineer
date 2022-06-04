@@ -1,22 +1,24 @@
+"""Arquivo responsavel por gerar informações necessarias (POIs e predição) para o usuário"""
+from functools import partial
+from collections import Counter
+import pickle
 import pandas as pd
 import pyproj
-from functools import partial
 from shapely.ops import transform
-from collections import Counter
 from shapely.geometry import Point
-import pickle
 
-loaded_model = pickle.load(open('model_campifarma.pickle', 'rb'))
 df_pois = pd.read_csv('pois.csv')
 
 
 def gera_isocota(ponto, raio):
+    """Gera a isocota"""
     raio_ponto_de_estudo_utm = lat_lng_to_utm(ponto).buffer(raio)
     raio_ponto_de_estudo_lat_lng = utm_to_lat_lng(raio_ponto_de_estudo_utm)
     return raio_ponto_de_estudo_lat_lng
 
 
 def lat_lng_to_utm(lat_lng_geom):
+    """Converte uma geometria de latitude e longitude para UTM"""
     project = partial(
         pyproj.transform,
         pyproj.Proj(init='epsg:4326'),  # source coordinate system
@@ -26,6 +28,7 @@ def lat_lng_to_utm(lat_lng_geom):
 
 
 def utm_to_lat_lng(utm_geom):
+    """Converte uma geometria de UTM para latitude e longitude"""
     project = partial(
         pyproj.transform,
         pyproj.Proj(init='epsg:3857'),  # source coordinate system
@@ -35,23 +38,21 @@ def utm_to_lat_lng(utm_geom):
 
 
 def obtem_configuracao():
+    """Obtem campos especificos (POIs)"""
     return {'faculdades', 'escolas', 'ponto_de_onibus', 'concorrentes__grandes_redes',
             'concorrentes__pequeno_varejista', 'minhas_lojas', 'agencia_bancaria', 'padaria',
             'acougue', 'restaurante', 'correio', 'loterica'}
 
 
 def obtem_pois(latitude: float, longitude: float):
-
-    area_de_influencia = 49
+    """Obtem os pontos de interesse do ponto passado"""
     target_pois = {}
     data = pd.DataFrame([{'latitude': latitude,
                           'longitude': longitude}])
 
     try:
         for row in data.itertuples():
-            lat, lng = row.latitude, row.longitude
-            pt = Point(lng, lat)
-            isocota = gera_isocota(pt, area_de_influencia)
+            isocota = gera_isocota(Point(row.longitude, row.latitude), 49)
             min_lng, min_lat, max_lng, max_lat = isocota.bounds
             mask = (df_pois.latitude.between(min_lat, max_lat) &
                     df_pois.longitude.between(min_lng, max_lng))
@@ -68,23 +69,21 @@ def obtem_pois(latitude: float, longitude: float):
 
         return {'n_pequeno_varejista': f'{float(df_data.iloc[0].concorrentes__pequeno_varejista)}',
                 'n_grandes_redes': f'{float(df_data.iloc[0].concorrentes__grandes_redes)}'}
-    except Exception as e:
-        print(e)
+    except Exception:
         return {'n_pequeno_varejista': '0.0',
                 'n_grandes_redes': '0.0'}
 
 
 def obtem_predicao(latitude: float, longitude: float):
-    # TODO not returning the right value
-    area_de_influencia = 1000
+    """Obtem a predição do modelo com base no ponto passado"""
+    model = pickle.load(open('model_campifarma.pickle', 'rb'))
     target_pois = {}
     data = pd.DataFrame([{'latitude': latitude,
                           'longitude': longitude}])
 
     for row in data.itertuples():
-        lat, lng = row.latitude, row.longitude
-        pt = Point(lng, lat)
-        isocota = gera_isocota(pt, area_de_influencia)
+        point = Point(row.longitude, row.latitude)
+        isocota = gera_isocota(point, 1000)
         min_lng, min_lat, max_lng, max_lat = isocota.bounds
         mask = (df_pois.latitude.between(min_lat, max_lat) &
                 df_pois.longitude.between(min_lng, max_lng))
@@ -99,7 +98,4 @@ def obtem_predicao(latitude: float, longitude: float):
         if i not in df_data:
             df_data[i] = 0
 
-    return {'predicao': loaded_model.predict(df_data)[0]}
-
-
-# print(predict(-22.818201, -46.988467))
+    return {'predicao': model.predict(df_data)[0]}
