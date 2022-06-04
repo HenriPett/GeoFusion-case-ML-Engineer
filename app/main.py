@@ -5,6 +5,7 @@ from fastapi import FastAPI
 
 from core.settings import DevSettings, ProdSettings
 from services.predict import obtem_pois, obtem_predicao
+from middleware.verifica import verifica_lat_lgn
 from dotenv import find_dotenv, load_dotenv
 
 app = FastAPI()
@@ -33,6 +34,17 @@ app, settings = configure_app()
 
 @app.get("/predict/")
 def consult(lat, lng):
+    if not verifica_lat_lgn(float(lat), float(lng)):
+        return json.dumps({'status_code': 401,
+                           'body': {
+                               "latitude": lat,
+                               "longitude": lng,
+                               'predicao': '-1',
+                               'n_pequeno_varejista': '-1',
+                               'n_grandes_redes': '-1',
+                           }
+                           })
+
     data = {
         "latitude": lat,
         "longitude": lng,
