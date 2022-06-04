@@ -3,7 +3,7 @@
 É possivel rodar o app diretamente pelo arquivo main.py ou usando Docker
 
 ### Rodando localmente:
-(É necessario ter o Python/Pip na sua maquina!)\n
+(É necessario ter o Python/Pip na sua maquina!)\
 Primeiro, é necessario baixar as dependências. Vá ao diretorio do projeto e execute o comando:
 ```
 pip install -r requirements.txt
