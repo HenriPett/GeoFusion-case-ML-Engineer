@@ -12,6 +12,8 @@ Após baixar as dependências, vá ao diretorio do projeto e rode o arquivo main
 ```
 python app/main.py
 ```
+Ao rodar o comando, poderá ver os logs da aplicação e o app já esta ativo na porta 80 da sua máquina.\
+É possivel acessar nesse link: http://localhost:8000
 
 ### Rodando com Docker:
 (É necessario ter o Docker na sua maquina, e alterar alguns imports de dependências locais)\
