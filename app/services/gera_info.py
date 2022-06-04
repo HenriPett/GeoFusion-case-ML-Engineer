@@ -1,4 +1,5 @@
 """Arquivo responsavel por gerar informações necessarias (POIs e predição) para o usuário"""
+import os
 from functools import partial
 from collections import Counter
 import pickle
@@ -7,7 +8,9 @@ import pyproj
 from shapely.ops import transform
 from shapely.geometry import Point
 
-df_pois = pd.read_csv('pois.csv')
+
+df_pois = pd.read_csv(os.path.join(
+    os.path.dirname(__file__), '../requirements/pois.csv'))
 
 
 def gera_isocota(ponto, raio):
@@ -76,7 +79,8 @@ def obtem_pois(latitude: float, longitude: float):
 
 def obtem_predicao(latitude: float, longitude: float):
     """Obtem a predição do modelo com base no ponto passado"""
-    model = pickle.load(open('model_campifarma.pickle', 'rb'))
+    model = pickle.load(open(os.path.join(
+        os.path.dirname(__file__), '../requirements/model_campifarma.pickle'), 'rb'))
     target_pois = {}
     data = pd.DataFrame([{'latitude': latitude,
                           'longitude': longitude}])
