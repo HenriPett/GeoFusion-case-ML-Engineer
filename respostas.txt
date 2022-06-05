@@ -2,16 +2,52 @@ a. Parabéns! Sua aplicação está agora em produção, e, assim,
 você passa a ser responsável por ela! Como você garantirá que
 ela está respondendo conforme o esperado?
 
+Além dos testes pré produção (desenvolvimento TDD), para garantir o funcionamento da aplicação
+em si. É necessário implementar ferramentas de monitoramento para todas as "faces"
+da aplicação. Prometheus com Grafana são ótimas ferramentas que podem ser implementadas
+para monitorar tanto a aplicação, como o ambiente Docker e até mesmo Kubernetes. O Grafana permite
+até mesmo um monitoramento ao vivo e na nuvem.
+O importante é manter um sistema de logs contante em todos os "locais" em que a aplicação
+está.
 
 b. É possível que, com o tempo, este modelo da Campifarma
 diminua a sua performance de predição? Em caso positivo,
 porque isso ocorre e como você solucionaria esse problema?
 
+Sim. Grande maioria dos modelos (pra não dizer todos) são temporários e possuem um "tempo de vida" devido à
+mudança constante do cenário em que os dados estão envolvidos. O exemplo do modelo em questão,
+podemos considerar o surgimento de novos POIs na cidade e a mudança da estrutura
+geográfica da cidade. Tirando todo o cenário generalista da economia do País, que pode
+sim impactar no target do modelo (faturamento médio mensal). Devido, por exemplo, ao
+constante aumento da inflação e/ou a pandemia.
+
+Para solucionar esse problema, temos diferentes soluções, dependendo de cada aplicação.
+Além de considerar o cenário em que os dados estão inseridos, devemos olhar para o "tipo"
+de modelo.
+
+Se for um modelo que aprendeu por batch (lotes), ele é incapaz de aprender
+com novos dados, sendo necessário implementar os novos dados junto dos antigos e normaliza-los
+(Deve se avaliar se os dados antigos ainda fazem sentido para a solução). Dessa forma,
+treinando um novo modelo, do zero, com os novos dados.
+
+Já se for um modelo que aprendeu online (aprendizado incrementado), ele é capaz de
+aprender com novos dados, devido ao seu constante aprendizado por "instancias" de dados.
+Entretanto, esse tipo de modelo deve ter um constante monitoramento para sua performance
+não diminuir devido à adição de dados ruins.
 
 c. Na sua visão, qual é a diferença de responsabilidades e de
 entregas de um Engenheiro de Machine Learning e de um
 Cientista de Dados?
 
+Penso que a resposta para essa pergunta varia bastante quanto ao cenário e empresa em
+que estámos analisando.
+
+Entretanto, de forma geral, o Cientista de Dados faz a ciência em si. Onde ele vai analizar
+o problema e achar uma solução que se adeque ao cenário proposto. Portanto, o Engenheiro de ML
+é responsavel por adequar a solução do Cientista de Dados em um ambiente de produção. Sendo
+responsavel pelo deploy e reprodução do pipeline criado pelos Cientistas no ambiente de pesquisa,
+no ambiente de produção. Garantindo que o modelo permanecera funcionando e performando da mesma
+forma que performava no ambiente de pesquisa. 
 
 d. A Campifarma cresceu muito após a utilização do modelo que
 foi colocado em produção por você. Assim eles desejam
@@ -20,3 +56,11 @@ desejam prever o faturamento em cada esquina o país, o que
 compreende por cerca de 10 milhões de pontos. Como você
 escalaria o seu serviço para responder à estas 10 milhões de
 requisições?
+
+Para aumentar a escalabilidade nessa proporção, a principal solução seria o uso de Kubernetes.
+Caso a Campifarma deseje realizar as 10 milhões de requisições ao mesmo tempo,
+é possivel combinar um periodo de tempo onde a equipe de MLOps pode, manualmente, provisionar
+pods adicionais para suportar a alta taxa de requisições. Caso não seja ao mesmo tempo, é
+possivel utilizar um autoscaler de pods para não ocorrer nenhum problema de surpresa. Onde
+o próprio autoscaler provisiona pods adicionais de forma automatica, com base na taxa de uso
+de recursos (como uso da CPU).
