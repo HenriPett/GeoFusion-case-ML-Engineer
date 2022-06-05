@@ -35,6 +35,12 @@ Ao rodar o comando, poderá ver os logs da aplicação e o app já esta ativo na
 ## Na aplicação:
 É possivel acessar a documentação da API no path /docs (http://localhost:8000/docs) e testar diretamente as funções.
 
+## Rodar testes:
+Vá ao diretório do projeto e execute o comando:
+```
+python -m unittest discover ./app
+```
+
 ## Decições técnicas
 Decidi fazer a API em FastAPI por ser levemente mais simples e, principalmente, por gerar documentação automaticamente com base nas docstrings.\
 Quanto a organização do diretório do projeto, a aplicação inteira está dentro da pasta app devido ao Docker utilizado exigir que seja colocado em uma pasta app.\
