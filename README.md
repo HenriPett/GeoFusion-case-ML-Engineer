@@ -36,7 +36,7 @@ Ao rodar o comando, poderá ver os logs da aplicação e o app já esta ativo na
 É possivel acessar a documentação da API no path /docs (http://localhost:8000/docs) e testar diretamente as funções.
 
 ## Rodar testes:
-Vá ao diretório do projeto e execute o comando:
+Vá ao diretório do projeto e execute o comando (a aplicação deve estar rodando):
 ```
 python -m unittest discover ./app
 ```
