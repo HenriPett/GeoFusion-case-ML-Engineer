@@ -6,7 +6,7 @@ from fastapi import FastAPI
 from dotenv import find_dotenv, load_dotenv
 
 from core.configuracao import DevSettings, ProdSettings
-from services.gera_info import obtem_pois, obtem_predicao
+from services.gera_retorno_api import obtem_pois, obtem_predicao
 from middleware.verifica import verifica_lat_lgn
 
 app = FastAPI()
