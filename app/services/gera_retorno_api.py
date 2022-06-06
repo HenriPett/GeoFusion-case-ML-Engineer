@@ -14,41 +14,51 @@ df_pois = pd.read_csv(os.path.join(
 
 
 def gera_isocota(ponto, raio):
-    """Gera a isocota"""
+    """
+    Gera a isocota
+    """
     raio_ponto_de_estudo_utm = lat_lng_to_utm(ponto).buffer(raio)
     raio_ponto_de_estudo_lat_lng = utm_to_lat_lng(raio_ponto_de_estudo_utm)
     return raio_ponto_de_estudo_lat_lng
 
 
 def lat_lng_to_utm(lat_lng_geom):
-    """Converte uma geometria de latitude e longitude para UTM"""
+    """
+    Converte uma geometria de latitude e longitude para UTM
+    """
     project = partial(
         pyproj.transform,
-        pyproj.Proj(init='epsg:4326'),  # source coordinate system
-        pyproj.Proj(init='epsg:3857'))  # destination coordinate system
+        pyproj.Proj(init='epsg:4326'),
+        pyproj.Proj(init='epsg:3857'))
     utm_geom = transform(project, lat_lng_geom)
     return utm_geom
 
 
 def utm_to_lat_lng(utm_geom):
-    """Converte uma geometria de UTM para latitude e longitude"""
+    """
+    Converte uma geometria de UTM para latitude e longitude
+    """
     project = partial(
         pyproj.transform,
-        pyproj.Proj(init='epsg:3857'),  # source coordinate system
-        pyproj.Proj(init='epsg:4326'))  # destination coordinate system
+        pyproj.Proj(init='epsg:3857'),
+        pyproj.Proj(init='epsg:4326'))
     lat_lng_geom = transform(project, utm_geom)
     return lat_lng_geom
 
 
 def obtem_configuracao():
-    """Obtem campos especificos (POIs)"""
+    """
+    Obtem campos especificos (POIs)
+    """
     return {'faculdades', 'escolas', 'ponto_de_onibus', 'concorrentes__grandes_redes',
             'concorrentes__pequeno_varejista', 'minhas_lojas', 'agencia_bancaria', 'padaria',
             'acougue', 'restaurante', 'correio', 'loterica'}
 
 
 def obtem_pois(latitude: float, longitude: float):
-    """Obtem os pontos de interesse do ponto passado"""
+    """
+    Obtem os pontos de interesse do ponto passado
+    """
     target_pois = {}
     data = pd.DataFrame([{'latitude': latitude,
                           'longitude': longitude}])
@@ -78,7 +88,9 @@ def obtem_pois(latitude: float, longitude: float):
 
 
 def obtem_predicao(latitude: float, longitude: float):
-    """Obtem a predição do modelo com base no ponto passado"""
+    """
+    Obtem a predição do modelo com base no ponto passado
+    """
     model = pickle.load(open(os.path.join(
         os.path.dirname(__file__), '../requirements/model_campifarma.pickle'), 'rb'))
 

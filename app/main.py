@@ -17,7 +17,9 @@ Geofusion API
 
 
 def configure_app():
-    """Configura o app com base no ambiente"""
+    """
+    Configura o app com base no ambiente
+    """
     load_dotenv(find_dotenv())
     if os.environ.get("API_ENVIRONMENT") == "prod":
         app_settings = ProdSettings()

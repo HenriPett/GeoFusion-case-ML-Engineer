@@ -9,7 +9,10 @@ class TestControllerConsulta(unittest.TestCase):
     base_path = 'http://localhost:8000/predict/'
 
     def test_api_consulta_dados_corretos(self):
-        """Função para testar com dados corretos"""
+        """
+        Função para testar com dados corretos 
+        (usei essa estrategia pois a predicao muda as casas decimais)
+        """
         self.assertNotEqual(
             json.loads(requests.get(
                 self.base_path + '?lat=-22.8232257917&lng=-47.0758807513').json()).get('body'),
@@ -18,7 +21,9 @@ class TestControllerConsulta(unittest.TestCase):
             "DEVERIA retornar 200, POIS os dados passados correspondem ao mapa de campinas")
 
     def test_api_consulta_dados_errados(self):
-        """Função para testar com dados incorretos"""
+        """
+        Função para testar com dados incorretos
+        """
         self.assertEqual(
             json.loads(requests.get(
                 self.base_path + '?lat=-22.982356215&lng=-46.9112167395').json()).get('body'),
