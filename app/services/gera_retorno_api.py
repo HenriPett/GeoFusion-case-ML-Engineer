@@ -116,6 +116,9 @@ def obtem_predicao(latitude: float, longitude: float):
         if i not in new_row:
             new_row[i] = 0
 
-    ordered_data = new_row[['acougue', 'agencia_bancaria', 'concorrentes__grandes_redes', 'concorrentes__pequeno_varejista',
-                            'correio', 'escolas', 'faculdades', 'loterica', 'minhas_lojas', 'padaria', 'ponto_de_onibus', 'restaurante']]
+    ordered_data = new_row[
+        ['acougue', 'agencia_bancaria', 'concorrentes__grandes_redes',
+         'concorrentes__pequeno_varejista', 'correio', 'escolas', 'faculdades',
+         'loterica', 'minhas_lojas', 'padaria', 'ponto_de_onibus', 'restaurante']
+    ]
     return {'predicao': model.predict(ordered_data)[0]}
