@@ -115,28 +115,7 @@ def obtem_predicao(latitude: float, longitude: float):
     for i in obtem_configuracao():
         if i not in new_row:
             new_row[i] = 0
-# -----------------------------------------------------------------------------------
-    dic_enriquecido = {}
-    target = 'minhas_lojas'
-    area_de_influencia = 1000
-    for row_target in df_pois.loc[df_pois['tipo_POI'] == target].itertuples():
-        lat, lng = row_target.latitude, row_target.longitude
-        point = Point(lng, lat)
-        isocota = gera_isocota(point, area_de_influencia)
-        min_lng, min_lat, max_lng, max_lat = isocota.bounds
-        mask = (df_pois.latitude.between(min_lat, max_lat) &
-                df_pois.longitude.between(min_lng, max_lng))
-        counter = Counter()
-        for row_poi in df_pois.loc[mask].itertuples():
-            if Point(row_poi.longitude, row_poi.latitude).within(isocota):
-                counter.update([row_poi.tipo_POI])
-        dic_enriquecido[row_target.Index] = counter
-    df_data = pd.DataFrame.from_dict(dic_enriquecido, orient='Index').fillna(0)
 
-    for i in obtem_configuracao():
-        if i not in df_data:
-            df_data[i] = 0
-
-    new_df = df_data.append(new_row, ignore_index=True, sort=True)
-
-    return {'predicao': model.predict(new_df)[-1]}
+    ordered_data = new_row[['acougue', 'agencia_bancaria', 'concorrentes__grandes_redes', 'concorrentes__pequeno_varejista',
+                            'correio', 'escolas', 'faculdades', 'loterica', 'minhas_lojas', 'padaria', 'ponto_de_onibus', 'restaurante']]
+    return {'predicao': model.predict(ordered_data)[0]}
